@@ -32,7 +32,9 @@ patterns=(
     "enctype"
     "lzw_decompress"
     "proc_open\("
-    "base64_decode\("
+    "base64_decode\(", 
+    "system", 
+    "eval" 
 )
 
 # Array of file extensions commonly used by shell backdoors
