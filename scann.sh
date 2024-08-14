@@ -32,9 +32,9 @@ patterns=(
     "enctype"
     "lzw_decompress"
     "proc_open\("
-    "base64_decode\(", 
-    "system", 
-    "eval" 
+    "base64_decode\("
+    "system"
+    "eval"
 )
 
 # Array of file extensions commonly used by shell backdoors
@@ -52,7 +52,7 @@ extensions=(
     "phtm"
     "phtml"
     "pgif"
-    "shtml" 
+    "shtml"
     "htaccess"
     "phar"
     "inc"
@@ -69,8 +69,8 @@ extensions=(
     "hphp"
     "ctp"
     # ASP extensions
-    "asp" 
-    "aspx" 
+    "asp"
+    "aspx"
     "config"
     "ashx"
     "asmx"
@@ -88,6 +88,14 @@ extensions=(
     "xml"
 )
 
+# Array of default web server users
+default_users=(
+    "www-data"
+    "nginx"
+    "apache"
+    "httpd"
+)
+
 bot_token=""
 chat_id=""
 
@@ -99,12 +107,14 @@ send_telegram() {
     local message="$1"
     curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
         -d "chat_id=$chat_id" \
-        -d "text=$message" > /dev/null 2>&1
+        -d "text=$message" 
 }
 
 scanDirRecursive() {
     local dir="$1"
-    local message=""
+    local list_file=""
+    local list_owner=""
+
     for file in "$dir"/*; do
         if [[ -d "$file" ]]; then
             scanDirRecursive "$file"
@@ -114,17 +124,26 @@ scanDirRecursive() {
                     lower=$(tr '[:upper:]' '[:lower:]' < "$file")
                     for pattern in "${patterns[@]}"; do
                         if echo "$lower" | grep -q -a -E "$pattern"; then
-                            message+="$file => [$pattern]\n"
-                            break 2  
+                            list_file+="$file => [$pattern]\n"
+                            break 2
+                        fi
+                    done
+
+                    local owner=$(stat -c "%U" "$file")
+                    for user in "${default_users[@]}"; do
+                        if [ "$owner" == "$user" ]; then
+                            list_owner+="$file => [$owner]\n"
+                            break
                         fi
                     done
                 fi
             done
         fi
     done
-    if [ -n "$message" ]; then
-        message="------------------------------------------------------\nHost: $server_name\nIP: $server_ip\n------------------------------------------------------\n\nSuspicious file detected:\n\n$message"
-        formatted_message=$(printf "%b" "$message")
+
+    if [ -n "$list_file" ] || [ -n "$list_owner" ]; then
+        formatted_message="------------------------------------------------------\nHost: $server_name\nIP: $server_ip\n------------------------------------------------------\n\nSuspicious file detected:\n\n$list_file\n\nDefault owner:\n\n$list_owner"
+        formatted_message=$(printf "%b" "$formatted_message")
         send_telegram "$formatted_message"
     fi
 }
