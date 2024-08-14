@@ -131,6 +131,10 @@ The script checks for files with the following extensions:
 - **PHPv8**: `.php`, `.php4`, `.php5`, `.phtml`, `.module`, `.inc`, `.hphp`, `.ctp`
 - **ASP**: `.asp`, `.aspx`, `.config`, `.ashx`, `.asmx`, `.aspq`, `.axd`, `.cshtm`, `.cshtml`, `.rem`, `.soap`, `.vbhtm`, `.vbhtml`, `.asa`, `.cer`, `.shtml`
 
+### 8. Result
+
+![alt text](https://raw.githubusercontent.com/mnovel/MalDetector/main/Result.png)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
