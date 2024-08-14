@@ -95,29 +95,29 @@ You can customize the patterns by editing the script:
 
 ```bash
 patterns=(
-    "depo\x73it"
+    "deposits"
     "jackpot"
     "maxwin"
     "slot"
     "gacor"
-    "file_get_contents("
+    "file_get_contents\("
     "webshell"
     "web shell"
-    "shell_exec"
-    "exec("
-    "system("
+    "shell_exec\("
+    "exec\("
+    "system\("
     "base64"
     "backdoor"
     "phpinfo"
     "php_uname"
     "milw0rm"
-    "popen"
-    "passthru"
+    "popen\("
+    "passthru\("
     "phpversion"
     "enctype"
     "lzw_decompress"
-    "proc_open"
-    "base64_decode"
+    "proc_open\("
+    "base64_decode\("
 )
 ```
 
