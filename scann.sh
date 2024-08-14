@@ -89,6 +89,10 @@ extensions=(
 bot_token=""
 chat_id=""
 
+# Get server name and IP
+server_name=$(hostname)
+server_ip=$(hostname -I | awk '{print $1}')
+
 send_telegram() {
     local message="$1"
     curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
@@ -117,7 +121,7 @@ scanDirRecursive() {
         fi
     done
     if [ -n "$message" ]; then
-        message="Suspicious file detected:\n\n$message"
+        message="------------------------------------------------------\nHost: $server_name\nIP: $server_ip\n------------------------------------------------------\n\nSuspicious file detected:\n\n$message"
         formatted_message=$(printf "%b" "$message")
         send_telegram "$formatted_message"
     fi
