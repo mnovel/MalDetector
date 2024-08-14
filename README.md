@@ -31,7 +31,7 @@ wget https://raw.githubusercontent.com/mnovel/MalDetector/main/scann.sh
 Ensure the script has executable permissions.
 
 ```bash
-chmod +x scan.sh
+chmod +x scann.sh
 ```
 
 ### 3. Usage
@@ -39,7 +39,7 @@ chmod +x scan.sh
 Run the script with the directory you want to scan as an argument. For example:
 
 ```bash
-./scan.sh /var/www/html
+./scann.sh /var/www/html
 ```
 
 This will scan the `/var/www/html` directory and subdirectories for suspicious PHP files.
@@ -53,7 +53,7 @@ To automate the scanning process, you can schedule this script to run periodical
 To run the script every day at 3:00 AM:
 
 ```bash
-0 3 * * * /path/to/scan.sh /var/www/html
+0 3 * * * /path/to/scann.sh /var/www/html
 ```
 
 #### Adding to Crontab
@@ -67,7 +67,7 @@ crontab -e
 Add the cron job at the end of the file:
 
 ```bash
-0 3 * * * /path/to/scan.sh /var/www/html
+0 3 * * * /path/to/scann.sh /var/www/html
 ```
 
 ### 5. Telegram Notification
