@@ -107,7 +107,7 @@ send_telegram() {
     local message="$1"
     curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
         -d "chat_id=$chat_id" \
-        -d "text=$message" 
+        -d "text=$message" > /dev/null 2>&1
 }
 
 scanDirRecursive() {
