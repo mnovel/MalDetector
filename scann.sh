@@ -96,8 +96,8 @@ default_users=(
     "httpd"
 )
 
-bot_token=""
-chat_id=""
+bot_token="6909462496:AAEHtzehlol77XZ2WSgI4KqZIbLuSYBKRqQ"
+chat_id="-1002243297308"
 
 # Get server name and IP
 server_name=$(hostname)
@@ -112,8 +112,6 @@ send_telegram() {
 
 scanDirRecursive() {
     local dir="$1"
-    local list_file=""
-    local list_owner=""
 
     for file in "$dir"/*; do
         if [[ -d "$file" ]]; then
@@ -128,25 +126,29 @@ scanDirRecursive() {
                             break 2
                         fi
                     done
-
                     local owner=$(stat -c "%U" "$file")
                     for user in "${default_users[@]}"; do
                         if [ "$owner" == "$user" ]; then
                             list_owner+="$file => [$owner]\n"
-                            break
+                            break 2
                         fi
                     done
                 fi
             done
         fi
     done
-
-    if [ -n "$list_file" ] || [ -n "$list_owner" ]; then
-        formatted_message="------------------------------------------------------\nHost: $server_name\nIP: $server_ip\n------------------------------------------------------\n\nSuspicious file detected:\n\n$list_file\n\nDefault owner:\n\n$list_owner"
-        formatted_message=$(printf "%b" "$formatted_message")
-        send_telegram "$formatted_message"
-    fi
 }
+
+# Initialize variables to collect results
+list_file=""
+list_owner=""
 
 # Run the scan
 scanDirRecursive "$dir"
+
+# Send all results in one message
+if [ -n "$list_file" ] || [ -n "$list_owner" ]; then
+    formatted_message="------------------------------------------------------\nHost: $server_name\nIP: $server_ip\n------------------------------------------------------\n\nSuspicious file detected:\n\n$list_file\n\nDefault owner:\n\n$list_owner"
+    formatted_message=$(printf "%b" "$formatted_message")
+    send_telegram "$formatted_message"
+fi
